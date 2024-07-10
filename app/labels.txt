@@ -1,0 +1,10 @@
+0 French Bulldog
+1 German Shepherd
+2 Labrador Retriever
+3 Golden Retriever
+4 Siberian Husky
+5 Poodle
+6 Chihuahua
+7 Pomeranian
+8 Rottweiler
+9 Beagle
