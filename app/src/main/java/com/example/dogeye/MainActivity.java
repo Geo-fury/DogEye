@@ -2,13 +2,8 @@ package com.example.dogeye;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,9 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +29,7 @@ import com.example.dogeye.ml.Model;
 public class MainActivity extends AppCompatActivity {
 
     private Button cameraButton, galleryButton;
-    private ImageView imageView;
+    private ImageView imageView, infoIcon;
     private TextView resultTextView;
     private static final int IMAGE_SIZE = 224;
 
@@ -60,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, 1);
         });
+
+        infoIcon.setOnClickListener(view -> {
+            String breed = resultTextView.getText().toString();
+            Intent intent = new Intent(MainActivity.this, BreedInfoActivity.class);
+            intent.putExtra("BREED", breed);
+            startActivity(intent);
+        });
     }
 
     private void initializeViews() {
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         galleryButton = findViewById(R.id.gallery_button);
         imageView = findViewById(R.id.imageView);
         resultTextView = findViewById(R.id.result);
+        infoIcon = findViewById(R.id.info_icon);
     }
 
     private void classifyImage(Bitmap image) {
@@ -96,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
             String[] classes = {"French Bulldog", "German Shepherd", "Labrador Retriever", "Golden Retriever", "Siberian Husky", "Poodle", "Chihuahua", "Pomeranian", "Rottweiler", "Beagle"};
             resultTextView.setText(classes[maxPos]);
+
+            // Show the info icon
+            infoIcon.setVisibility(View.VISIBLE);
 
             model.close();
         } catch (IOException e) {

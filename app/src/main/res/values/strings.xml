@@ -4,4 +4,6 @@
     <string name="open_gallery">Open Gallery</string>
     <string name="classified_as">Classified as:</string>
     <string name="image_view_description">Image preview</string>
+    <string name="info_icon_description">Your description here</string>
+    <string name="breed_image">Breed Image</string>
 </resources>
