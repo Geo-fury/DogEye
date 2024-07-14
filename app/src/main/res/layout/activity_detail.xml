@@ -25,5 +25,5 @@
         android:layout_below="@id/prediction_text"
         android:layout_alignParentRight="true"
         android:layout_marginTop="16dp"
-        android:src="@drawable/historyicon" />
+        android:src="@drawable/infoicon" />
 </RelativeLayout>

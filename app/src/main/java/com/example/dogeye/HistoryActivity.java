@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +20,9 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        TextView historyTitle = findViewById(R.id.history_title);  // Reference the history title
+        historyTitle.setText("History");  // Set the title text
 
         ListView listView = findViewById(R.id.history_list);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, historyList);

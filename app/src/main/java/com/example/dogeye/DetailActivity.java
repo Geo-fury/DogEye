@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import java.io.File;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -20,13 +21,14 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String itemData = intent.getStringExtra("ITEM_DATA");
-        // Assuming itemData format: "BreedName - timestamp - imagePath"
+        // Assuming itemData format: "BreedName - timestamp - uniqueID"
         String[] parts = itemData.split(" - ");
         String breed = parts[0];
-        String imagePath = parts[2];
+        String uniqueID = parts[2];
         predictionText.setText(breed);
 
-        // Load and display the image
+        // Load and display the image using the unique ID
+        String imagePath = getImagePathFromInternalStorage(uniqueID);
         imageView.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
         infoIcon.setOnClickListener(v -> {
@@ -34,5 +36,11 @@ public class DetailActivity extends AppCompatActivity {
             infoIntent.putExtra("BREED", breed);
             startActivity(infoIntent);
         });
+    }
+
+    private String getImagePathFromInternalStorage(String uniqueID) {
+        File directory = getDir("imageDir", MODE_PRIVATE);
+        File mypath = new File(directory, uniqueID + ".jpg");
+        return mypath.getAbsolutePath();
     }
 }

@@ -1,10 +1,8 @@
 package com.example.dogeye;
 
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,14 +22,15 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Date;
+import java.util.UUID;
 
 import com.example.dogeye.ml.Model;
 
@@ -190,11 +189,14 @@ public class MainActivity extends AppCompatActivity {
         // Get the current date and time
         String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        // Save the image to internal storage
-        String imagePath = saveImageToInternalStorage(image, currentDateTime);
+        // Generate a unique identifier for the image
+        String uniqueID = UUID.randomUUID().toString();
 
-        // Add the new prediction with date, time, and image path to the set
-        historySet.add(prediction + " - " + currentDateTime + " - " + imagePath);
+        // Save the image to internal storage with the unique ID as the filename
+        String imagePath = saveImageToInternalStorage(image, uniqueID);
+
+        // Add the new prediction with date and time to the set
+        historySet.add(prediction + " - " + currentDateTime + " - " + uniqueID);
 
         // Save the updated set back to SharedPreferences
         editor.putStringSet("HISTORY", historySet);
@@ -211,7 +213,14 @@ public class MainActivity extends AppCompatActivity {
         Set<String> historySet = sharedPreferences.getStringSet("HISTORY", new HashSet<>());
 
         historyList.clear();
-        historyList.addAll(historySet);
+        for (String item : historySet) {
+            // Split the item to ensure it's properly formatted
+            String[] parts = item.split(" - ");
+            if (parts.length == 3) {
+                // Add only the prediction and date/time to the history list for display
+                historyList.add(parts[0] + " - " + parts[1]);
+            }
+        }
     }
 
     // Save the image to internal storage
